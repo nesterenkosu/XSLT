@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="jquery-3.7.1.min.js"></script>
+		<script>
+		$(function(){
+			let xmlfile = "input_no_styles.xml";
+			let xslfile = "list.xsl";
+			$.get(xmlfile,function(xml){
+				$.get(xslfile,function(xsl){
+					//Для IE работать не будет
+					//для IE использовать xml.transformNode(xsl);
+					xsltProcessor = new XSLTProcessor();
+					xsltProcessor.importStylesheet(xsl);
+					resultDocument = xsltProcessor.transformToFragment(xml, document);	$("body").append(resultDocument);					
+				});
+			});
+		});
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

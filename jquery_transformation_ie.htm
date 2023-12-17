@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="jquery-3.7.1.min.js"></script>
+		<script>
+		$(function(){
+			let xmlfile = "input_no_styles.xml";
+			let xslfile = "list.xsl";
+			$.get(xmlfile,function(xml){
+				$.get(xslfile,function(xsl){
+					//Для IE как всегда костыльно...
+				
+					//Преобразуем полученный XMLDocument в строку					
+					xml_s = new XMLSerializer().serializeToString(xml);
+					xsl_s = new XMLSerializer().serializeToString(xsl);
+					
+					//Создадим ActiveX-овские XML-объекты
+					let ie_xml = new ActiveXObject("Msxml2.DOMDocument.3.0");
+					let ie_xsl = new ActiveXObject("Msxml2.DOMDocument.3.0");
+					
+					//Наполним их данными на основе строковых представлений
+					//исходных XML-документов
+					ie_xml.loadXML(xml_s);
+					ie_xsl.loadXML(xsl_s);
+					
+					//И только теперь выполним XSL-преобразование
+					resultDocument = ie_xml.transformNode(ie_xsl);
+					
+					//отобразим результаты преобразований на странице
+					$("body").html(resultDocument);
+										
+				});
+			});
+		});
+		</script>
+	</head>
+	<body>
+	</body>
+</html>
